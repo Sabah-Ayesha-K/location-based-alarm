@@ -1,4 +1,4 @@
-import { View, Text, TextInput, StyleSheet, TouchableOpacity } from 'react-native';
+import { View, Text, TextInput, StyleSheet, TouchableOpacity, Alert } from 'react-native';
 import { useRouter } from 'expo-router';
 import { useState } from 'react';
 
@@ -7,33 +7,55 @@ export default function LoginScreen() {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
 
+  const handleLogin = async () => {
+    try {
+      const response = await fetch('http://192.168.0.3:8080/api/auth/login', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          email,
+          password,
+        }),
+      });
+
+      const data = await response.text();
+
+      if (response.ok) {
+        Alert.alert('Success', data);
+      } else {
+        Alert.alert('Login Failed', data);
+      }
+    } catch (error) {
+      console.log('Login error:', error);
+      Alert.alert('Error', 'Could not connect to backend');
+    }
+  };
+
   return (
     <View style={styles.container}>
       <Text style={styles.title}>Login</Text>
 
-        <TextInput
-            placeholder="Email"
-            style={styles.input}
-            value={email}
-            onChangeText={setEmail}
-       />
+      <TextInput
+        placeholder="Email"
+        style={styles.input}
+        value={email}
+        onChangeText={setEmail}
+        autoCapitalize="none"
+      />
 
-        <TextInput
-            placeholder="Password"
-            secureTextEntry
-            style={styles.input}
-            value={password}
-            onChangeText={setPassword}
-        />
-        <TouchableOpacity
-            style={styles.button}
-            onPress={() => {
-                console.log('Email:', email);
-                console.log('Password:', password);
-            }}
-            >
-            <Text style={styles.buttonText}>Login</Text>
-        </TouchableOpacity>
+      <TextInput
+        placeholder="Password"
+        secureTextEntry
+        style={styles.input}
+        value={password}
+        onChangeText={setPassword}
+      />
+
+      <TouchableOpacity style={styles.button} onPress={handleLogin}>
+        <Text style={styles.buttonText}>Login</Text>
+      </TouchableOpacity>
 
       <TouchableOpacity onPress={() => router.push('/signup')}>
         <Text style={styles.link}>Don't have an account? Sign up</Text>

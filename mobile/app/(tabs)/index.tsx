@@ -1,27 +1,28 @@
-import { useState } from 'react';
 import { View, Text, StyleSheet, TouchableOpacity } from 'react-native';
+import { useRouter } from 'expo-router';
 
 export default function HomeScreen() {
-  const [message, setMessage] = useState('Tap the button to test backend connection');
-
-  const testBackend = async () => {
-    try {
-      const response = await fetch('http://192.168.0.3:8080/api/test');
-      const data = await response.text();
-      setMessage(data);
-    } catch (error) {
-      setMessage('Failed to connect to backend');
-      console.log('Backend connection error:', error);
-    }
-  };
+  const router = useRouter();
 
   return (
     <View style={styles.container}>
       <Text style={styles.title}>Location Alarm App</Text>
-      <Text style={styles.subtitle}>{message}</Text>
+      <Text style={styles.subtitle}>
+        Set alarms based on where you are going.
+      </Text>
 
-      <TouchableOpacity style={styles.button} onPress={testBackend}>
-        <Text style={styles.buttonText}>Test Backend</Text>
+      <TouchableOpacity
+        style={styles.button}
+        onPress={() => router.push('/login')}
+      >
+        <Text style={styles.buttonText}>Login</Text>
+      </TouchableOpacity>
+
+      <TouchableOpacity
+        style={styles.buttonSecondary}
+        onPress={() => router.push('/signup')}
+      >
+        <Text style={styles.buttonSecondaryText}>Sign Up</Text>
       </TouchableOpacity>
     </View>
   );
@@ -53,9 +54,23 @@ const styles = StyleSheet.create({
     paddingVertical: 14,
     borderRadius: 10,
     alignItems: 'center',
+    marginBottom: 14,
   },
   buttonText: {
     color: '#ffffff',
+    fontSize: 16,
+    fontWeight: '600',
+  },
+  buttonSecondary: {
+    width: '80%',
+    borderWidth: 1,
+    borderColor: '#111111',
+    paddingVertical: 14,
+    borderRadius: 10,
+    alignItems: 'center',
+  },
+  buttonSecondaryText: {
+    color: '#111111',
     fontSize: 16,
     fontWeight: '600',
   },

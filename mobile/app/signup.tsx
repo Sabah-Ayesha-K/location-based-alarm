@@ -1,4 +1,4 @@
-import { View, Text, TextInput, StyleSheet, TouchableOpacity } from 'react-native';
+import { View, Text, TextInput, StyleSheet, TouchableOpacity, Alert } from 'react-native';
 import { useRouter } from 'expo-router';
 import { useState } from 'react';
 
@@ -7,6 +7,37 @@ export default function SignupScreen() {
   const [name, setName] = useState('');
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
+
+  const handleSignup = async () => {
+    try {
+      const response = await fetch('http://192.168.0.3:8080/api/auth/signup', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          name,
+          email,
+          password,
+        }),
+      });
+
+      const data = await response.text();
+
+      if (response.ok) {
+        Alert.alert('Success', data);
+        setName('');
+        setEmail('');
+        setPassword('');
+        router.push('/login');
+      } else {
+        Alert.alert('Signup Failed', data);
+      }
+    } catch (error) {
+      console.log('Signup error:', error);
+      Alert.alert('Error', 'Could not connect to backend');
+    }
+  };
 
   return (
     <View style={styles.container}>
@@ -23,6 +54,7 @@ export default function SignupScreen() {
         style={styles.input}
         value={email}
         onChangeText={setEmail}
+        autoCapitalize="none"
       />
       <TextInput
         placeholder="Password"
@@ -32,14 +64,7 @@ export default function SignupScreen() {
         onChangeText={setPassword}
       />
 
-      <TouchableOpacity
-        style={styles.button}
-        onPress={() => {
-          console.log('Name:', name);
-          console.log('Email:', email);
-          console.log('Password:', password);
-        }}
-      >
+      <TouchableOpacity style={styles.button} onPress={handleSignup}>
         <Text style={styles.buttonText}>Create Account</Text>
       </TouchableOpacity>
 
