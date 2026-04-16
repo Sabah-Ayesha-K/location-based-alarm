@@ -1,6 +1,7 @@
 import { View, Text, TextInput, StyleSheet, TouchableOpacity, Alert } from 'react-native';
 import { useRouter } from 'expo-router';
 import { useState } from 'react';
+import { BASE_URL } from '../constants/config';
 
 export default function SignupScreen() {
   const router = useRouter();
@@ -10,7 +11,7 @@ export default function SignupScreen() {
 
   const handleSignup = async () => {
     try {
-      const response = await fetch('http://192.168.0.3:8080/api/auth/signup', {
+      const response = await fetch(`${BASE_URL}/api/auth/signup`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
