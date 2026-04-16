@@ -43,3 +43,5 @@ app-example
 /android
 
 mobile/.env
+.env
+.env.*
