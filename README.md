@@ -1,8 +1,10 @@
-# Location-Based Alarm Application
+# 📍Location-Based Alarm Application
 
 A full-stack mobile application that allows users to create alarms based on geographic destinations instead of only time. The app lets users select a destination on a map, store alarms securely, and trigger alerts when the user enters the configured radius around that location.
 
-## Features
+---
+
+## 🚀 Features
 
 ### Authentication
 - User signup and login
@@ -30,7 +32,9 @@ A full-stack mobile application that allows users to create alarms based on geog
 - Spring Security filter chain
 - Ownership protection so users can only access their own alarms
 
-## Tech Stack
+---
+
+## 🛠️ Tech Stack
 
 ### Frontend
 - React Native
@@ -52,7 +56,9 @@ A full-stack mobile application that allows users to create alarms based on geog
 ### Database
 - MySQL
 
-## Architecture Overview
+---
+
+## 🏛️ Architecture Overview
 
 ### Mobile App
 Responsible for:
@@ -77,7 +83,9 @@ Stores:
 - Destination address
 - Alarm settings
 
-## API Endpoints
+---
+
+## 📡 API Endpoints
 
 ### Auth
 - `POST /api/auth/signup`
@@ -89,7 +97,9 @@ Stores:
 - `PUT /api/alarms/{id}`
 - `DELETE /api/alarms/{id}`
 
-## Project Flow
+---
+
+## ⛓ Project Flow
 
 1. User signs up and logs in
 2. Backend returns JWT token
@@ -100,7 +110,9 @@ Stores:
 7. Distance is calculated against saved alarm coordinates
 8. Alert/notification is triggered when user enters the alarm radius
 
-## How the Trigger Works
+---
+
+## 👩🏻‍💻 How the Trigger Works
 
 The app uses live device location updates and calculates the distance between:
 - Current device location
@@ -117,7 +129,9 @@ The trigger is reusable:
 - leaving the radius resets the state
 - re-entering the radius triggers it again
 
-## Setup Instructions
+---
+
+## ⚙️ Setup Instructions
 
 ## 1. Clone the repository
 
@@ -139,3 +153,8 @@ mvn spring-boot:run
 cd mobile
 npx expo start -c
 ```
+---
+
+## 👩‍💻 Author
+
+Sabah Ayesha K
