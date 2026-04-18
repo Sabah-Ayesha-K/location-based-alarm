@@ -124,3 +124,18 @@ The trigger is reusable:
 ```bash
 git clone <your-repo-url>
 cd location-based-alarm-app
+```
+
+## 2. Run backend
+
+```bash
+cd backend
+mvn spring-boot:run
+```
+
+## 3. Clone the repository
+
+```bash
+cd mobile
+npx expo start -c
+```
