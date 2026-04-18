@@ -147,7 +147,7 @@ cd backend
 mvn spring-boot:run
 ```
 
-## 3. Clone the repository
+## 3. Run frontend
 
 ```bash
 cd mobile
