@@ -1,6 +1,7 @@
 import { View, Text, TextInput, StyleSheet, TouchableOpacity, Alert } from 'react-native';
 import { useRouter } from 'expo-router';
 import { useState } from 'react';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 import { BASE_URL } from '../constants/config';
 
 export default function LoginScreen() {
@@ -24,7 +25,9 @@ export default function LoginScreen() {
       const data = await response.text();
 
       if (response.ok) {
-        Alert.alert('Success', data);
+        await AsyncStorage.setItem('token', data);
+        Alert.alert('Success', 'Login successful');
+        router.replace('/alarms');
       } else {
         Alert.alert('Login Failed', data);
       }
