@@ -6,20 +6,20 @@ A full-stack mobile application that allows users to create alarms based on geog
 
 ## 🚀 Features
 
-### Authentication
+### 🔐 Authentication
 - User signup and login
 - Password hashing using BCrypt
 - JWT-based authentication
 - Protected APIs for user-specific data
 
-### Alarm Management
+### ⏰ Alarm Management
 - Create alarms
 - View user-specific alarms
 - Update alarms
 - Delete alarms
 - Toggle alarms active/inactive
 
-### Location Features
+### 📍Location Features
 - Google Maps-based destination selection
 - Center map on current location
 - Reverse geocoding for readable destination address
@@ -27,7 +27,7 @@ A full-stack mobile application that allows users to create alarms based on geog
 - Foreground location-based triggering
 - Reusable trigger logic (alarm resets when user leaves the area and can trigger again on re-entry)
 
-### Security
+### ⚠️ Security
 - JWT token generation and validation
 - Spring Security filter chain
 - Ownership protection so users can only access their own alarms
@@ -131,7 +131,7 @@ The trigger is reusable:
 
 ---
 
-## ⚙️ Setup Instructions
+## 🔧 Setup Instructions
 
 ## 1. Clone the repository
 
