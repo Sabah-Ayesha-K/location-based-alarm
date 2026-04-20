@@ -99,6 +99,7 @@ Stores:
 - Destination coordinates
 - Destination address
 - Alarm settings
+- Location history
 
 ---
 
