@@ -32,6 +32,23 @@ A full-stack mobile application that allows users to create alarms based on geog
 - Spring Security filter chain
 - Ownership protection so users can only access their own alarms
 
+### 🤖 AI Feature (Frequent Place Detection)
+- Collects user location history
+- Applies clustering (DBSCAN-inspired) to detect frequent locations
+- Identifies commonly visited places automatically
+- Displays intelligent suggestions in the app
+- Allows **direct alarm creation from AI-detected places**
+
+---
+
+## 🧠 How the AI Feature Works
+
+1. The app periodically stores user location samples
+2. Backend groups nearby points using a distance-based clustering approach
+3. Clusters with sufficient visits are identified as frequent places
+4. These are returned to the app as suggestions
+5. Users can directly create alarms from these suggestions
+
 ---
 
 ## 🛠️ Tech Stack
@@ -97,6 +114,12 @@ Stores:
 - `PUT /api/alarms/{id}`
 - `DELETE /api/alarms/{id}`
 
+### Location History (AI)
+- `POST /api/location-history`
+
+### AI Suggestions
+- `GET /api/ai/frequent-places`
+
 ---
 
 ## ⛓ Project Flow
@@ -109,6 +132,8 @@ Stores:
 6. Mobile app tracks current location in foreground
 7. Distance is calculated against saved alarm coordinates
 8. Alert/notification is triggered when user enters the alarm radius
+9. Location samples are stored for AI processing
+10. Frequent places are detected and suggested
 
 ---
 
