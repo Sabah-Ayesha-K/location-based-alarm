@@ -197,6 +197,8 @@ export default function AlarmsScreen() {
           const currentLat = location.coords.latitude;
           const currentLon = location.coords.longitude;
 
+          await saveLocationSample(currentLat, currentLon);
+
           const updatedDistances: Record<number, number> = {};
 
           for (const alarm of alarms) {
@@ -235,6 +237,42 @@ export default function AlarmsScreen() {
     } catch (error) {
       console.log('Location tracking error:', error);
       Alert.alert('Error', 'Could not start location tracking');
+    }
+  };
+
+  const saveLocationSample = async (latitude: number, longitude: number) => {
+    try {
+      const token = await AsyncStorage.getItem('token');
+      if (!token) return;
+
+      let address: string | null = null;
+
+      try {
+        const geocode = await Location.reverseGeocodeAsync({ latitude, longitude });
+        if (geocode.length > 0) {
+          const place = geocode[0];
+          address = [place.name, place.street, place.city, place.region]
+            .filter(Boolean)
+            .join(', ');
+        }
+      } catch (err) {
+        console.log('Reverse geocode sample error:', err);
+      }
+
+      await fetch(`${BASE_URL}/api/location-history`, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          Authorization: `Bearer ${token}`,
+        },
+        body: JSON.stringify({
+          latitude,
+          longitude,
+          address,
+        }),
+      });
+    } catch (error) {
+      console.log('Save location sample error:', error);
     }
   };
 
@@ -331,6 +369,13 @@ export default function AlarmsScreen() {
 
       <TouchableOpacity style={styles.logoutButton} onPress={handleLogout}>
         <Text style={styles.logoutButtonText}>Logout</Text>
+      </TouchableOpacity>
+
+      <TouchableOpacity
+        style={styles.secondaryButton}
+        onPress={() => router.push('/frequent-places')}
+      >
+        <Text style={styles.secondaryButtonText}>Frequent Places</Text>
       </TouchableOpacity>
 
       <FlatList

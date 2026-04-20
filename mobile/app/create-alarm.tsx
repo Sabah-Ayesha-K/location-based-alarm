@@ -5,19 +5,30 @@ import { useRouter } from 'expo-router';
 import { BASE_URL } from '../constants/config';
 import * as Location from 'expo-location';
 import MapView, { Marker, PROVIDER_GOOGLE, Region } from 'react-native-maps';
+import { suggestRadius } from '../utils/radiusSuggestion';
+import { useLocalSearchParams } from 'expo-router';
 
 export default function CreateAlarmScreen() {
   const router = useRouter();
   const mapRef = useRef<MapView | null>(null);
 
-  const [title, setTitle] = useState('');
+  const params = useLocalSearchParams();
+
+  const [title, setTitle] = useState((params.title as string) ||'');
   const [radius, setRadius] = useState('');
 
   // Destination chosen by tapping the map
   const [destination, setDestination] = useState<{
     latitude: number;
     longitude: number;
-  } | null>(null);
+  } | null>(
+    params.latitude && params.longitude
+    ? {
+        latitude: Number(params.latitude),
+        longitude: Number(params.longitude),
+      }
+    : null
+  );
 
   // User's current device location
   const [currentLocation, setCurrentLocation] = useState<{
@@ -26,13 +37,13 @@ export default function CreateAlarmScreen() {
   } | null>(null);
 
   const [region, setRegion] = useState<Region>({
-    latitude: 12.9716,
-    longitude: 77.5946,
+    latitude: params.latitude ? Number(params.latitude) : 12.9716,
+    longitude: params.longitude ? Number(params.longitude) : 77.5946,
     latitudeDelta: 0.05,
     longitudeDelta: 0.05,
   });
 
-  const [address, setAddress] = useState<string | null>(null);
+  const [address, setAddress] = useState<string | null>((params.address as string) || null);
 
   const handleMapPress = async (event: any) => {
     const { latitude, longitude } = event.nativeEvent.coordinate;
@@ -58,6 +69,8 @@ export default function CreateAlarmScreen() {
             .join(', ');
 
         setAddress(formattedAddress);
+        const suggested = suggestRadius(formattedAddress);
+        setRadius(suggested.toString());
         }
     } catch (error) {
         console.log('Reverse geocode error:', error);
@@ -196,6 +209,10 @@ export default function CreateAlarmScreen() {
         onChangeText={setRadius}
         keyboardType="numeric"
       />
+
+      <Text style={{ color: '#777', marginBottom: 10 }}>
+        Suggested radius based on location
+      </Text>
 
       <View style={styles.infoBox}>
         <Text style={styles.infoHeading}>Selected Destination</Text>
