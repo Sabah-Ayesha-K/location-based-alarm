@@ -26,13 +26,15 @@ public class AuthController {
     @PostMapping("/signup")
     public ResponseEntity<String> signup(@RequestBody SignupRequest request) {
 
-        if (userRepository.findByEmail(request.getEmail()).isPresent()) {
+        String email = request.getEmail().trim().toLowerCase();
+
+        if (userRepository.findByEmail(email).isPresent()) {
             return ResponseEntity.badRequest().body("Email already exists");
         }
 
         User user = new User();
         user.setName(request.getName());
-        user.setEmail(request.getEmail());
+        user.setEmail(email);
         user.setPassword(passwordEncoder.encode(request.getPassword()));
 
         userRepository.save(user);
@@ -43,9 +45,15 @@ public class AuthController {
     @PostMapping("/login")
     public ResponseEntity<String> login(@RequestBody LoginRequest request) {
 
-        User user = userRepository.findByEmail(request.getEmail()).orElse(null);
+        String email = request.getEmail().trim().toLowerCase();
+
+        System.out.println("Raw email: [" + request.getEmail() + "]");
+        System.out.println("Normalized email: [" + email + "]");
+
+        User user = userRepository.findByEmail(email).orElse(null);
 
         if (user == null) {
+            System.out.println("No user found for email: [" + email + "]");
             return ResponseEntity.badRequest().body("User not found");
         }
 
